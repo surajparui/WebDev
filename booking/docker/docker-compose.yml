@@ -1,0 +1,48 @@
+version: '3'
+services:
+
+  #PHP Service
+  php-fpm:
+    image: felipemeddeiros/phpfpm-composer:7.4
+    container_name: php-fpm
+    restart: unless-stopped
+    volumes:
+      - ../:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../:/var/www
+      - ./nginx/sites/:/etc/nginx/conf.d/
+      - ./nginx/log/:/var/log/nginx/
+    networks:
+      - app-network
+        
+  #MySQL Service
+  mysql:
+    image: mysql:8.0.20
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: airplane_booking_system_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
