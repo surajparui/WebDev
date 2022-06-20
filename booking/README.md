@@ -3,7 +3,7 @@
 REST API for multiple-seat booking
 
 ### Design description
-I designed the code using the SOLID principles and the design patterns: repositories and services. 
+We designed the code using the SOLID principles and the design patterns: repositories and services. 
 
 Every controller has one work that's why I inject their main work in the class construct method when I need some work from another class I add it in the specific method using type hint. I keep the controllers clean, I use them just to point who has to work, repository or the service, and to deliver the response. 
 
